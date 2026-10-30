@@ -14,5 +14,16 @@ public interface EmpMapper {
 	
 	// 사원 삭제
 	int deleteEmp(HashMap<String, Object> map); 
+	
+	// 사원 추가
+	int insertEmp(HashMap<String, Object> map); 
+	
+	// 사원 조회
+	Emp selectEmp(HashMap<String, Object> map);
+	
+	// 사원 수정
+	void updateEmp(HashMap<String, Object> map); 
+	
+	List<Emp> selectGradeList(HashMap<String, Object> map);
 }
 

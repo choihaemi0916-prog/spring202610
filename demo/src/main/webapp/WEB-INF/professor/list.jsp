@@ -32,6 +32,22 @@
             <button @click="fnList">검색</button>
         </div>
         <div>
+            학과 : 
+            <select v-model="deptNo" @change="fnList">
+                <option value="">:: 선택 ::</option>
+                <option v-for="item in deptList" :value="item.deptNo">{{item.dName}}</option>
+            </select>
+            |
+            직급 :
+            <select v-model="position" @change="fnList">
+                <option value="">:: 전체 ::</option>
+                <option value="정교수">정교수</option>
+                <option value="조교수">조교수</option>
+                <option value="전임강사">전임강사</option>
+            </select>
+        </div>
+        <hr>
+        <div>
 			<table>
 				<tr>
 					<th>교수번호</th>
@@ -39,16 +55,23 @@
 					<th>직급</th>								
                     <th>급여</th>								
                     <th>이메일</th>
+                    <th>학과</th>
                     <th>삭제</th>
 				</tr>
 				<tr v-for="item in list">
 					<td>{{item.profNo}}</td>
-					<td>{{item.name}}</td>
+					<td>
+                        <a href="javascript:;" @click="fnView(item.profNo)">{{item.name}}</a>
+                    </td>
 					<td>{{item.position}}</td>
                     <td>{{item.pay}}</td>
                     <td>{{item.email}}</td>
+                    <td>{{item.dName}}</td>
                     <td><button @click="fnRemove(item.profNo)">삭제</button></td>
 				</tr>
+                <tr v-if="list.length == 0">
+                    <td colspan="7">조건에 맞는 데이터가 없습니다.</td>
+                </tr>
 			</table>
 		</div>
         <div>
@@ -65,7 +88,10 @@
             return {
                 // 변수 - (key : value)
 				list : [],
-                keyword : ""
+                keyword : "",
+                deptList : [],
+                deptNo : "",
+                position : ""
             };
         },
         methods: {
@@ -73,16 +99,19 @@
             fnList : function () {
                 let self = this;
                 let param = {
-                    keyword : self.keyword
+                    keyword : self.keyword,
+                    deptNo : self.deptNo,
+                    position : self.position
                 };
                 $.ajax({
-                    url: "http://localhost:8080/professor.list.dox",
+                    url: "http://localhost:8080/professor/list.dox",
                     dataType: "json",
                     type: "POST",
                     data: param,
                     success: function (data) {
 						console.log(data);
                         self.list = data.list;
+                        self.deptList = data.deptList;
                     }
                 });
             },
@@ -102,7 +131,11 @@
 												
 				    }
 				});				
-			}						
+			},
+            fnView : function(profNo){
+                // view.do 페이지 이동
+                pageChange("view.do", {profNo : profNo});
+            }						
         }, // methods
         mounted() {
             // 처음 시작할 때 실행되는 부분

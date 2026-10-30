@@ -26,6 +26,26 @@ public class EmpController {
 		return "/emp/list";
 	}
 	
+	@RequestMapping("/emp/add.do")
+	public String add(Model model) throws Exception{
+		
+		return "/emp/add";
+	}
+	
+	@RequestMapping("/emp/info.do")
+	public String info(Model model) throws Exception{
+		
+		return "/emp/info";
+	}
+	
+	
+	@RequestMapping("/emp/view.do")
+	public String view(Model model, @RequestParam HashMap<String, Object> map) throws Exception{
+		model.addAttribute("empNo", map.get("empNo"));
+		return "/emp/view";
+	}
+
+	
 	@RequestMapping(value = "/emp/list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String login(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
@@ -45,4 +65,25 @@ public class EmpController {
 		
 		return new Gson().toJson(resultMap); 
 	}
+
+	@RequestMapping(value = "/emp/add.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String add(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println(map);
+		resultMap = empService.addEmp(map);
+		
+		return new Gson().toJson(resultMap); 
+	}
+	
+	
+	@RequestMapping(value = "/emp/info.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String info(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println(map);
+		resultMap = empService.getEmp(map);
+		
+		return new Gson().toJson(resultMap); 
+	}	
 }

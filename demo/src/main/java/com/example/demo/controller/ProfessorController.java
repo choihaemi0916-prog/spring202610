@@ -30,20 +30,46 @@ public class ProfessorController {
 		
 		return "/professor/add";
 	}
-
+	// 상세 보기
+	@RequestMapping("/professor/view.do")
+	public String view(Model model, @RequestParam HashMap<String, Object> map) throws Exception{
+		System.out.println(map);
+		model.addAttribute("profNo", map.get("profNo"));
+		return "/professor/view";
+	}
+	// 수정 페이지
+	@RequestMapping("/professor/edit.do")
+	public String edit2(Model model, @RequestParam HashMap<String, Object> map) throws Exception{
+		model.addAttribute("profNo", map.get("profNo"));
+		return "/professor/edit";
+	}
+	
+	// 중복 체크
 	@RequestMapping("/professor/info.do")
 	public String info(Model model) throws Exception{
 		
 		return "/professor/info";
 	}
-		
 	
-	@RequestMapping(value = "/professor.list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+			
+	
+	@RequestMapping(value = "/professor/list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String login(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
 		resultMap = professorService.getProfessorList(map);
+		
+		return new Gson().toJson(resultMap); 
+	}
+	
+	
+	@RequestMapping(value = "/professor/edit.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String edit(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap = professorService.editProfessor(map);
 		
 		return new Gson().toJson(resultMap); 
 	}
@@ -79,7 +105,6 @@ public class ProfessorController {
 		
 		return new Gson().toJson(resultMap); 
 	}	
-	
 	
 	@RequestMapping(value = "/professor/dept-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
