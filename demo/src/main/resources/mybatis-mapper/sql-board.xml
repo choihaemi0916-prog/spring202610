@@ -24,6 +24,6 @@
 		WHERE BOARDNO IN
 		<foreach collection="list" item="item" open="(" separator="," close=")">
 		 	#{item}
-		</foreach>	
+		</foreach>
 	</delete>		
 </mapper>
