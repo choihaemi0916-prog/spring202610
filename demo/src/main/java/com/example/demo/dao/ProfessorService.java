@@ -16,13 +16,22 @@ public class ProfessorService {
 	
 	public HashMap<String, Object> getProfessorList(HashMap<String, Object> map){
 		HashMap<String, Object> resultMap = new HashMap();
+
+		String limit = (String) map.get("limit");
+		String offset = (String) map.get("offset");
+		map.put("limit", Integer.parseInt(limit));
+		map.put("offset", Integer.parseInt(offset));
+		
+		int count = professorMapper.selectProfessorCount(map);
+		resultMap.put("count", count);
+		
 		List<Professor> list = professorMapper.selectProfessorList(map);
 		List<Professor> deptList = professorMapper.selectDeptList(map);
 		
 		resultMap.put("list", list);
 		resultMap.put("deptList", deptList);
 		resultMap.put("result", "success");
-		
+
 		return resultMap;
 		
 	}

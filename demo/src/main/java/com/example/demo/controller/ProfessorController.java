@@ -57,7 +57,7 @@ public class ProfessorController {
 	@ResponseBody
 	public String login(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		
+		System.out.println(map);
 		resultMap = professorService.getProfessorList(map);
 		
 		return new Gson().toJson(resultMap); 

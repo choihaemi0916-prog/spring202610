@@ -21,7 +21,7 @@
         </div>
         <div>
             <button @click="fnLogin">로그인</button>
-            <button>회원가입</button>
+            <a href="join.do"><button>회원가입</button></a>
         </div>      
     </div>
 	
@@ -53,7 +53,7 @@
                     success: function (data) {
                         alert(data.message);
                             if(data.loginFlg){
-                            location.href="/professor/list.do";
+                            location.href="/user/list.do";
                         }
                     }
                 });

@@ -7,14 +7,28 @@
 		SELECT *
 		FROM PROFESSOR P
 		INNER JOIN DEPARTMENT D ON P.DEPTNO = D.DEPTNO
-		WHERE NAME LIKE CONCAT('%', #{keyword}, '%')
+		WHERE NAME LIKE CONCAT('%', #{keyword}, '%')	
 		<if test="deptNo != null and deptNo != ''">
 			AND P.DEPTNO = #{deptNo}
 		</if>
 		<if test="position != null and position != ''">
 			AND POSITION = #{position}
 		</if>
+		LIMIT #{limit} OFFSET #{offset}
 	</select>
+	
+	<select id="selectProfessorCount" parameterType="hashmap" resultType="int">
+		SELECT COUNT(*)
+		FROM PROFESSOR P
+		INNER JOIN DEPARTMENT D ON P.DEPTNO = D.DEPTNO
+		WHERE NAME LIKE CONCAT('%', #{keyword}, '%')
+		<if test="deptNo != null and deptNo != ''">
+			AND P.DEPTNO = #{deptNo}
+		</if>
+		<if test="position != null and position != ''">
+			AND POSITION = #{position}
+		</if>		
+	</select>	
 	
 	<delete id="deleteProfessor" parameterType="hashmap">
 		DELETE FROM PROFESSOR WHERE PROFNO = #{profNo}

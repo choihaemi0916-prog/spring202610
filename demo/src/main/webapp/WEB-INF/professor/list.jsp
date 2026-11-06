@@ -31,6 +31,12 @@
             검색어 : <input v-model="keyword" type="text" @keyup.enter="fnList">
             <button @click="fnList">검색</button>
         </div>
+            <select v-model="pageSize" @change="currentPage=1; fnList();">
+                <option value="5">5개씩</option>
+                <option value="10">10개씩</option>
+                <option value="15">15개씩</option>
+                <option value="20">20개씩</option>
+            </select>         
         <div>
             학과 : 
             <select v-model="deptNo" @change="fnList">
@@ -77,6 +83,11 @@
         <div>
             <a href="add.do"><button>교수추가</button></a>
         </div>
+            <div id="paging">
+                <a href="javascript:;" v-if="currentPage != 1" @click="currentPage--; fnList();">◀</a>
+                <a @click="currentPage = item; fnList();" :class="{active : currentPage == item}" href="javascript:;" v-for="item in idx">{{item}}</a>
+                <a href="javascript:;" v-if="currentPage != idx" @click="currentPage++; fnList();">▶</a>
+            </div>        
     </div>
 	
 </body>
@@ -91,7 +102,11 @@
                 keyword : "",
                 deptList : [],
                 deptNo : "",
-                position : ""
+                position : "",
+
+                idx : 1, // 페이징 갯수(최대 페이지 수)
+                pageSize : 5, // 한페이지에 출력할 개수
+                currentPage : 1 // 현재 페이지                
             };
         },
         methods: {
@@ -101,7 +116,10 @@
                 let param = {
                     keyword : self.keyword,
                     deptNo : self.deptNo,
-                    position : self.position
+                    position : self.position,
+
+                    limit : self.pageSize,
+                    offset : self.pageSize * (self.currentPage - 1)                    
                 };
                 $.ajax({
                     url: "http://localhost:8080/professor/list.dox",
@@ -112,6 +130,7 @@
 						console.log(data);
                         self.list = data.list;
                         self.deptList = data.deptList;
+                        self.idx = Math.ceil( data.count / self.pageSize );
                     }
                 });
             },

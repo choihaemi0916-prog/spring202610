@@ -34,4 +34,18 @@ public class UserService {
 		}
 		return resultMap;
 	}
+	
+	public HashMap<String, Object> addUser(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap();
+		
+		try {
+			int result = userMapper.insertUser(map);
+				resultMap.put("result", "success");
+			
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());
+		}
+		return resultMap;
+	}
 }
