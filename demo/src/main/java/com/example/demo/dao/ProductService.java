@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.mapper.ProductMapper;
 import com.example.demo.model.Product;
+import com.example.demo.model.Professor;
 
 @Service
 public class ProductService {
@@ -31,6 +32,22 @@ public class ProductService {
 		}
 		return resultMap;
 	}
+
+	public HashMap<String, Object> getProduct(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap();
+		Product info = productMapper.selectProduct(map);
+		
+		resultMap.put("info", info);
+		resultMap.put("result", "success");
+		return resultMap;
+	}
 	
+	public HashMap<String, Object> editProduct(HashMap<String, Object> map) {
+		HashMap<String, Object> resultMap = new HashMap();
+		productMapper.updateProduct(map);
+		
+		resultMap.put("result", "success");
+		return resultMap;
+	}
 	
 }

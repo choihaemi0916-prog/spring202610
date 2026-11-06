@@ -24,6 +24,13 @@ public class ProductController {
 		return "/product/list";
 	}
 	
+	@RequestMapping("/product/view.do")
+	public String view(Model model, @RequestParam HashMap<String, Object> map) throws Exception{
+		model.addAttribute("productId", map.get("productId"));
+		return "/product/view";
+	}
+		
+	
 	@RequestMapping(value = "/product/list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String login(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
@@ -34,6 +41,26 @@ public class ProductController {
 		return new Gson().toJson(resultMap); 
 	}
 	
+	@RequestMapping(value = "/product/view.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String info(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println(map);
+		resultMap = productService.getProduct(map);
+		
+		return new Gson().toJson(resultMap); 
+	}		
+	
+	
+	@RequestMapping(value = "/product/edit.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String edit(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		System.out.println(map);
+		resultMap = productService.editProduct(map);
+		
+		return new Gson().toJson(resultMap); 
+	}	
 	
 	
 }
